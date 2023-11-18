@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import NavbarComponent from './components/navbar/navbar';
-import Home from './pages/home';
-import Error404 from "./pages/page_not_found";
+import Home from './pages/home/home';
+import Error404 from "./pages/error404/error404";
 import FooterComponent from "./components/footer/footer";
 
 function App() {

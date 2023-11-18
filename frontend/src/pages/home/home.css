@@ -1,0 +1,6 @@
+body {
+    background-image: url('../../assets/backgrounds/it_bg-01.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
