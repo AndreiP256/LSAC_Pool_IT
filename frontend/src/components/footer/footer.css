@@ -1,0 +1,14 @@
+.footer{
+    background-color: #FF1F66;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.social-icon{
+    padding: 10px;
+    height: 50px;
+}
