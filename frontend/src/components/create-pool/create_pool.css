@@ -1,0 +1,87 @@
+.modal-backdrop {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+.modal-body{
+    background-color: #04395E;
+    color: #FFFFFF;
+}
+.modal-footer{
+    justify-content: center;
+    background-color: #04395E;
+    color: #FFFFFF;
+    border-top: 0 none;
+}
+
+.btn-primary{
+    background-color: #FFFFFF;
+    color: #04395E;
+    width: 30%;
+}
+
+.modal-header{
+    justify-content: center;
+    background-color: #04395E;
+    color: #FFFFFF;
+    border-bottom: 0 none;
+}
+
+.modal-title{
+    text-align: center;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.btn-close{
+    margin: 0;
+    background-color: #FFFFFF;
+    opacity: 1;
+}
+
+.modal-header .btn-close {
+    margin: 0;
+}
+
+
+.pool{
+    background-color: rgba(255, 255, 255, 0.5);
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    color: #FFFFFF;
+    margin: 0;
+    height: 3rem;
+}
+
+.pool::placeholder{
+    background-color: rgba(255, 255, 255, 0);
+    color: #FFFFFF;
+    margin: 5px 0 5px 0;
+}
+
+form{
+    margin: 0 10% 0 10%;
+}
+
+.form-group{
+    margin: 10% 0;
+}
+
+.add-option{
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #FFFFFF;
+    width: 40%;
+}
+
+.rem-btn{
+    color:#FFFFFF;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-top-right-radius: 0;
+    font-size: x-large;
+    font-weight: bolder;
+    height: 3rem;
+}
+
+.bg-pink {
+    background-color: #FF1F66;
+    height: 5px;
+  }
