@@ -1,0 +1,13 @@
+.mk-choice{
+    font-weight:lighter;
+}
+
+.the_pool{
+    background-color: #FFFFFF;
+    width: 25%;
+    max-width: 800px;
+    min-width: 400px;
+    border-radius: 20px;
+    padding: 1%;
+    margin: 2%;
+}

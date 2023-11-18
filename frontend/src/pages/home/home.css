@@ -4,3 +4,36 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+.poll-container{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .header{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .header-comp{
+    width: 50%;
+    max-width: 300px;
+  }
+
+  .par{
+    padding: auto;
+    padding-left: 5%;
+    padding-top: 2%;
+    color: #FFFFFF;
+    max-width: 500px;
+    margin: 0;
+  }
+
+
+  .main-page{
+    padding: 70px 0 60px 0;
+  }
