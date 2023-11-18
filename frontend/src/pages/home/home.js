@@ -7,7 +7,7 @@ import Turtle from '../../assets/images/testoasa.png'
 
 const poolProps = {
     received_title: "Sample Title",
-    is_multiple: "checkbox",
+    is_multiple: 0,
     choices: ["Option 1", "Option 2", "Option 3"],
     id: 1,
   };
@@ -17,7 +17,7 @@ export default function Home() {
         <div className="main-page">
             <div className="header">
                 <p className="header-comp par">Opiniile sunt mai importante ca niciodată. Platformele de sondaje permit organizatorilor să culeagă feedback direct de la audiența lor și să înțeleagă mai bine nevoile și dorințele acesteia.</p>
-                <img src={Turtle} className="header-comp"/>
+                <img src={Turtle} className="header-comp img"/>
             </div>
             <div className="poll-container">
                 <Pool {...poolProps}/>

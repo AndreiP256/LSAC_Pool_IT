@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Inter');
+ * {
+    font-family: 'Inter';
+}
+
 body {
     background-image: url('../../assets/backgrounds/it_bg-01.png');
     background-size: cover;
@@ -19,18 +24,22 @@ body {
     flex-wrap: wrap;
   }
 
-  .header-comp{
-    width: 50%;
-    max-width: 300px;
-  }
+    .img{
+        width: 50%;
 
-  .par{
-    padding: auto;
-    padding-left: 5%;
-    padding-top: 2%;
-    color: #FFFFFF;
-    max-width: 500px;
-    margin: 0;
+        max-width: 500px;
+        padding-right: 10%;
+    }
+
+    .par{
+        width: 50%;
+        padding: auto;
+        padding-left: 10%;
+        padding-top: 2%;
+        color: #FFFFFF;
+        max-width: 600px;
+        margin: 0;
+        margin-right: auto;
   }
 
 

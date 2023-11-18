@@ -17,7 +17,7 @@ export default function Pool({ received_title, is_multiple, choices, id }) {
         <div className='the_pool'>
       <Form>
         <FormGroup className='form-group' controlId={`pool_show_title_${id_pool}`}>
-          <FormLabel>{title}</FormLabel>
+          <FormLabel className='q-title'>{title}</FormLabel>
           <FormLabel className='mk-choice'>Make a choice</FormLabel>
         </FormGroup>
         <FormGroup className='form-group form-options' controlId={`pool_show_options_${id_pool}`}>

@@ -11,3 +11,12 @@
     padding: 1%;
     margin: 2%;
 }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .q-title{
+    font-weight: bolder;
+  }
