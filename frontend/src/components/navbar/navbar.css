@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Inter');
+
+
+.nav-link{
+    font-family: 'Inter';
+    font-weight: bolder;
+    text-align: right;
+    color: #04395E;
+}
+
+.hamburger {
+    color: #04395E;
+}
