@@ -13,18 +13,18 @@ export default function FooterComponent() {
             <Container fluid className="footer">
                 <Row className="justify-content-center">
                     <Col xs="auto">
-                        <a href="#" className='social-icon'>
+                        <a href="https://www.instagram.com/lsacbucuresti/" className='social-icon' target="_blank">
                             <img src={InstagramIcon} alt="Instagram"  className="social-icon"/>
                         </a>
                     </Col>
                     <Col xs="auto">
-                        <a href="#" className='social-icon'>
+                        <a href="https://www.facebook.com/LsacBucuresti" className='social-icon' target="_blank">
                             <img src={FacebookIcon} alt="Faceboook" className="social-icon"/>
                         </a>
                     </Col>
                     <Col xs="auto" >
-                        <a href="#" className='social-icon'>
-                            <img href="#" src={TwitchIcon} alt="Twitch"  className="social-icon"/>
+                        <a href="https://www.twitch.tv/lsac_bucuresti" className='social-icon' target="_blank">
+                            <img src={TwitchIcon} alt="Twitch"  className="social-icon"/>
                         </a>
                     </Col>
                 </Row>
