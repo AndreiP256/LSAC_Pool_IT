@@ -60,12 +60,15 @@ export default function Login() {
               placeholder="Email"
               value={email}
               onChange={e => setEmail(e.target.value)}
+              required
+              autoFocus
             />
             <Form.Control
               type="password"
               placeholder="Password"
               value={password}
               onChange={e => setPassword(e.target.value)}
+              required
             />
             <Button variant="primary" type="submit">
               Login

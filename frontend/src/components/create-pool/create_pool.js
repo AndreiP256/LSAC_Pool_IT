@@ -78,6 +78,7 @@ export default function CreatePool() {
                         type="text"
                         placeholder="Type your question here"
                         className='pool rounded-bottom straigth-top'
+                        required
                     />
                 </FormGroup>
                 <FormGroup className='form-group' controlId='pool_type'>
@@ -87,12 +88,14 @@ export default function CreatePool() {
                       type='radio'
                       id='radio_single'
                       label='Single Choice' 
+                      required
                       />
                     <Form.Check
                       name="choice_type"
                       type='radio'
                       id='radio_multiple'
                       label='Muliple choice'
+                      required
                     />
                 </FormGroup>
                 <FormGroup className='form-group'>
@@ -106,6 +109,7 @@ export default function CreatePool() {
                             value={option}
                             onChange={(e) => handleOptionChange(index, e.target.value)}
                             className='pool'
+                            required
                           />
                           <Button
                             variant="outline-light"
