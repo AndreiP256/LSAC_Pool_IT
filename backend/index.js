@@ -30,7 +30,20 @@ app.get("/users", (req, res) =>{
         })
     })
 
-app.get("/new_user")
+app.use("/new", (req, res) => {
+    const user = new UserModel({
+        email: req.body.email,
+        password: req.body.password
+    })
+    user.save()
+        .then(function(){
+            console.log("User saved")
+            res.json(user)
+        })
+        .catch(function(err){
+            console.log(err)
+        })
+})
 
 
 app.listen(5000, () => {
