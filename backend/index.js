@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const app = express();
 
-
+secret = 'your-secret-key';
 
 mongoose.connect('mongodb+srv://Prusi-admin:Database_pass@lsac-poll-it.g9u2hcc.mongodb.net/poll_it_app')
 .then(() => {
@@ -34,32 +35,77 @@ app.get("/users", (req, res) =>{
         })
     })
 
-    app.post("/new", (req, res) => {
-        const email = req.body.email;
-        const password = req.body.password;
-    
-        UserModel.findOne({ email: email })
-            .then(user => {
-                if (user) {
-                    res.status(400).json({ message: "Email already in use" });
+app.post("/new", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    UserModel.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                res.status(400).json({ message: "Email already in use" });
+            } else {
+                const newUser = new UserModel({ email, password });
+                newUser.save()
+                    .then(() => {
+                        console.log("User saved");
+                        res.json(newUser);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({ message: "Error saving user" });
+                    });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ message: "Error checking user existence" });
+        });
+});
+
+app.post("/login", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    UserModel.findOne({ email: email })
+        .then(user => {
+            if (!user) {
+                res.status(400).json({ message: "Incorrect email or password" });
+            } else {
+                if (password === user.password) {
+                    const token = jwt.sign({ id: user._id }, secret);
+                    res.json({ message: "Logged in successfully" });
                 } else {
-                    const newUser = new UserModel({ email, password });
-                    newUser.save()
-                        .then(() => {
-                            console.log("User saved");
-                            res.json(newUser);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(500).json({ message: "Error saving user" });
-                        });
+                    res.status(400).json({ message: "Incorrect email or password" });
                 }
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({ message: "Error checking user existence" });
-            });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ message: "Error logging in" });
+        });
+});
+
+function authenticate(req, res, next) {
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({ message: "Missing token" });
+    }
+
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+
+        req.userId = decoded.id;
+        next();
     });
+}
+
+app.post("/logout", authenticate, (req, res) => {
+  
+    res.json({ message: "Logged out successfully" });
+});
+
 
 app.listen(5000, () => {
     console.log("Server is running")
