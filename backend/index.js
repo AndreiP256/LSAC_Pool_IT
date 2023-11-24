@@ -41,7 +41,7 @@ app.get("/users", (req, res) =>{
 app.post("/new", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
+    console.log(req.body);
     UserModel.findOne({ email: email })
         .then(user => {
             if (user) {

@@ -16,7 +16,11 @@
 .btn-primary{
     background-color: #FFFFFF;
     color: #04395E;
-    width: 30%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .modal-header{

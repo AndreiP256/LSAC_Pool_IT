@@ -29,9 +29,8 @@ export default function Login() {
         setErrorMessage('');
         const token = response.data.token;
         localStorage.setItem('token', token);
-        setIsLoggedIn(true);
         setShowLoginSuccess(true);
-        setTimeout(() => setShowLoginSuccess(false), 5000);
+        setTimeout(() => {setShowLoginSuccess(false); setIsLoggedIn(true);}, 2000);
       }
     } catch (error) {
       console.error("Error logging in:", error);
@@ -47,7 +46,6 @@ export default function Login() {
 
   return (
     <>
-      {showLoginSuccess && <Alert variant="success">Logged in successfully!</Alert>}
       <Nav.Link onClick={handleShow} className='nav-link'>Login</Nav.Link>
       <Modal show={show} onHide={handleClose} size='m' centered>
         <Modal.Header closeButton>
@@ -55,6 +53,7 @@ export default function Login() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
+            {showLoginSuccess && <Alert variant="success">Logged in successfully!</Alert>}
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             <Form.Control
               type="email"
