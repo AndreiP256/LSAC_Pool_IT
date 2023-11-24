@@ -50,6 +50,10 @@ export default function CreatePool() {
       title,
       is_multiple: isMultiple,
       options,
+    },{
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
     })
       .then(response => {
         console.log('Success:', response.data);

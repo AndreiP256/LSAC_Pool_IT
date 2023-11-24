@@ -4,14 +4,22 @@ import Pool from "../../components/poll/poll"
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Turtle from '../../assets/images/testoasa.png'
+import axios from "axios";
+import React, { useState, useEffect } from 'react';
 
-const poolProps = {
-    received_title: "Sample Title",
-    is_multiple: 0,
-    choices: ["Option 1", "Option 2", "Option 3"],
-  };
 
 export default function Home() {
+    const [pools, setPools] = useState([]);     
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/polls')
+        .then(response => {
+            setPools(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching polls:', error);
+        });
+    }, []);
     return (
         <div className="main-page">
             <div className="header">
@@ -19,10 +27,16 @@ export default function Home() {
                 <img src={Turtle} className="header-comp img"/>
             </div>
             <div className="poll-container">
-                <Pool {...poolProps}/>
-                <Pool {...poolProps}/>
-                <Pool {...poolProps}/>
-                <Pool {...poolProps}/>
+                {pools.map(pool => (
+                    <Pool
+                        received_title={pool.title}
+                        is_multiple={pool.is_multiple}
+                        choices={pool.options}
+                        id={pool._id}
+                        users_voted={pool.user_voted}
+                        got_votes={pool.votes}
+                    />
+                ))}
             </div>
         </div>
     )

@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useState } from 'react';
 import { AuthContext } from './AuthContext';
+import { useEffect } from 'react'; // Import useEffect
 
 import NavbarComponent from './components/navbar/navbar';
 import Home from './pages/home/home';
@@ -11,6 +12,16 @@ import FooterComponent from "./components/footer/footer";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('user_id');
+
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
       <>
        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>

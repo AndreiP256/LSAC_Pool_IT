@@ -28,7 +28,9 @@ export default function Login() {
       if (response) {
         setErrorMessage('');
         const token = response.data.token;
+        const user_id = response.data.user_id;
         localStorage.setItem('token', token);
+        localStorage.setItem('user_id', user_id);
         setShowLoginSuccess(true);
         setTimeout(() => {setShowLoginSuccess(false); setIsLoggedIn(true);}, 2000);
       }

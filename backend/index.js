@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const app = express();
 
-secret = 'your-secret-key';
+const secret = 'your-secret-key';
 
 app.use(cors());
 
@@ -24,16 +24,36 @@ const UserSchema = mongoose.Schema({
 })
 
 const PollSchema = mongoose.Schema({
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     title: String,
     is_multiple: Boolean,
     options: Array,
-    votes: Number,
+    votes: Array,
+    user_voted: Array
 })
 
 const UserModel = mongoose.model("User", UserSchema)
 const PollModel = mongoose.model("Poll", PollSchema)
 
 app.use(bodyParser.json());
+
+function authenticate(req, res, next) {
+    let token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({ message: "Missing token" });
+    }
+
+    console.log("Token:", token);
+
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
+
+        // If the token is valid, call next() to proceed to the next middleware or route handler
+        next();
+    });
+}
 
 app.get("/users", (req, res) =>{
     UserModel.find({})
@@ -77,19 +97,33 @@ app.post("/new_poll", (req, res) => {
     const title = req.body.title;
     const is_multiple = req.body.is_multiple;
     const options = req.body.options;
-    const votes = 0;
-    console.log(req.body);
-    const newPoll = new PollModel({ title, is_multiple, options, votes });
-    newPoll.save()
+    const authHeader = req.headers.authorization;
+  
+    if (!authHeader) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+  
+    const token = authHeader.split(' ')[1];
+  
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ error: 'Invalid token' });
+      }
+  
+      const owner = decoded.id;
+      const newPoll = new PollModel({ title, is_multiple, options, owner, votes: new Array(options.length).fill(0), user_voted: [] });
+  
+      newPoll.save()
         .then(() => {
-            console.log("Poll saved");
-            res.json(newPoll);
+          console.log("Poll saved");
+          res.json(newPoll);
         })
         .catch(err => {
-            console.log(err);
-            res.status(500).json({ message: "Error saving poll" });
+          console.log(err);
+          res.status(500).json({ message: "Error saving poll" });
         });
-});
+    });
+  });
 
 app.post("/login", (req, res) => {
     console.log(req.body);
@@ -115,26 +149,58 @@ app.post("/login", (req, res) => {
         });
 });
 
-function authenticate(req, res, next) {
-    const token = req.headers['authorization'];
-    if (!token) {
-        return res.status(401).json({ message: "Missing token" });
+app.get('/user', (req, res) => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(401).json({ error: 'No token provided' });
     }
+
+    const token = authHeader.split(' ')[1];
 
     jwt.verify(token, secret, (err, decoded) => {
         if (err) {
-            return res.status(401).json({ message: "Invalid token" });
+            return res.status(401).json({ error: 'Invalid token' });
         }
 
-        req.userId = decoded.id;
-        next();
+        res.json({ userId: decoded.id });
     });
-}
+});
+
+app.put("/update_pool", authenticate, (req, res) => {
+    const { id, votes, user_voted } = req.body;
+    console.log(req.body);
+    PollModel.findByIdAndUpdate(id, { votes, user_voted }, (err, poll) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error updating poll' });
+      }
+  
+      if (!poll) {
+        return res.status(404).json({ error: 'Poll not found' });
+      }
+  
+      res.json({ message: 'Poll updated successfully' });
+    });
+});
+
 
 app.post("/logout", authenticate, (req, res) => {
   
     res.json({ message: "Logged out successfully" });
 });
+
+app.get("/polls", (req, res) =>{
+    PollModel.find({})
+        .then(function(polls){
+            console.log("i got the pools")
+            console.log(polls)
+            res.json(polls)
+        })
+        .catch(function(err){
+            console.log(err)
+        })
+    }
+)   
 
 
 app.listen(5000, () => {
