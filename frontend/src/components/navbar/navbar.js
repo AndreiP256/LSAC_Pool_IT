@@ -7,9 +7,15 @@ import Login from '../login/login';
 import Register from '../register/register';
 import './navbar.css';
 import CreatePool from '../create-pool/create_pool';
+import Logout from '../logout/logout';
+
+import { useContext } from 'react';
+import { AuthContext } from '../../AuthContext';
+
 
 
 export default function NavbarComponent() {
+    const { isLoggedIn } = useContext(AuthContext);
     return (
         <Navbar expand="lg" className="bg-body-white">
                 <NavbarBrand>
@@ -20,9 +26,10 @@ export default function NavbarComponent() {
 
                 <Navbar.Collapse id="basic-navbar-nav" className='hamburger'>
                     <Nav className="ms-auto">
-                        <CreatePool></CreatePool>
-                        <Login/>
-                        <Register/>
+                        {isLoggedIn && <CreatePool/>}
+                        {!isLoggedIn && <Login/>}
+                        {!isLoggedIn && <Register/>}
+                        {isLoggedIn && <Logout/>}
                     </Nav>
                 </Navbar.Collapse>
         </Navbar>

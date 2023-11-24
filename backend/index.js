@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
@@ -6,6 +7,8 @@ const router = express.Router();
 const app = express();
 
 secret = 'your-secret-key';
+
+app.use(cors());
 
 mongoose.connect('mongodb+srv://Prusi-admin:Database_pass@lsac-poll-it.g9u2hcc.mongodb.net/poll_it_app')
 .then(() => {
@@ -63,6 +66,7 @@ app.post("/new", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
+    console.log(req.body);
     const email = req.body.email;
     const password = req.body.password;
 
@@ -73,7 +77,7 @@ app.post("/login", (req, res) => {
             } else {
                 if (password === user.password) {
                     const token = jwt.sign({ id: user._id }, secret);
-                    res.json({ message: "Logged in successfully" });
+                    res.json({ message: "Logged in successfully", token: token });
                 } else {
                     res.status(400).json({ message: "Incorrect email or password" });
                 }
