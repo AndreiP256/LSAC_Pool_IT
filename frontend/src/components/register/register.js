@@ -80,6 +80,7 @@ export default function Register() {
                     </Button>
             </Form>
         </Modal.Body>
+        <Modal.Footer/>
       </Modal>
     </>
   );

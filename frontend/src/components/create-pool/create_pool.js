@@ -3,12 +3,13 @@ import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/esm/Nav';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 
 import './create_pool.css';
 import FormGroup from 'react-bootstrap/esm/FormGroup';
 import FormLabel from 'react-bootstrap/esm/FormLabel';
 import FormControl from 'react-bootstrap/FormControl';
-import InputGroup from 'react-bootstrap/InputGroup';
+import InputGroup from 'react-bootstrap/InputGroup';  
 
 export default function CreatePool() {
   const [show, setShow] = useState(false);
@@ -36,8 +37,27 @@ export default function CreatePool() {
     setOptions(newOptions);
   };
 
-  const handleSubmit = () => {
-    handleClose();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const titleElement = document.getElementById('pool_title');
+    const singleChoiceElement = document.getElementById('radio_single');
+    const multipleChoiceElement = document.getElementById('radio_multiple');
+  
+    const title = titleElement.value;
+    const isMultiple = multipleChoiceElement.checked;
+  
+    await axios.post('http://localhost:5000/new_poll', {
+      title,
+      is_multiple: isMultiple,
+      options,
+    })
+      .then(response => {
+        console.log('Success:', response.data);
+        handleClose();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
   
 
@@ -50,7 +70,7 @@ export default function CreatePool() {
           <Modal.Title>Create a Poll</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <FormGroup className='form-group' controlId='pool_title'>
                     <FormLabel>Title</FormLabel>
                     <div className='bg-pink w-100 rounded-top'></div>
@@ -100,15 +120,14 @@ export default function CreatePool() {
                   <Button className='add-option' onClick={addOption}>
                   + Add Option
                   </Button>
+                  <Button variant="primary" type='submit'>
+                    Create Poll
+                  </Button>
               </FormGroup>
 
             </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Create Poll
-          </Button>
-        </Modal.Footer>
+        <Modal.Footer/>
       </Modal>
     </>
   );

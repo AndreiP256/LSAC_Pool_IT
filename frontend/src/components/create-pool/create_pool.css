@@ -91,3 +91,8 @@ form{
     background-color: #FF1F66;
     height: 5px;
   }
+
+.btn-primary{
+    margin-top: 4%;
+    margin-bottom: 0;
+}

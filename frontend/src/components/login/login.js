@@ -72,6 +72,7 @@ export default function Login() {
             </Button>
           </Form>
         </Modal.Body>
+        <Modal.Footer/>
       </Modal>
     </>
   );
