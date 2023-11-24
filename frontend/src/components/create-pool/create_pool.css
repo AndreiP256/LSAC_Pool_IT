@@ -19,6 +19,12 @@
     width: 30%;
 }
 
+input,
+textarea,
+select {
+  margin: 0;
+}
+
 .modal-header{
     justify-content: center;
     background-color: #04395E;

@@ -23,7 +23,15 @@ const UserSchema = mongoose.Schema({
     password: String
 })
 
+const PollSchema = mongoose.Schema({
+    title: String,
+    is_multiple: Boolean,
+    options: Array,
+    votes: Number,
+})
+
 const UserModel = mongoose.model("User", UserSchema)
+const PollModel = mongoose.model("Poll", PollSchema)
 
 app.use(bodyParser.json());
 
@@ -62,6 +70,24 @@ app.post("/new", (req, res) => {
         .catch(err => {
             console.log(err);
             res.status(500).json({ message: "Error checking user existence" });
+        });
+});
+
+app.post("/new_poll", (req, res) => {
+    const title = req.body.title;
+    const is_multiple = req.body.is_multiple;
+    const options = req.body.options;
+    const votes = 0;
+    console.log(req.body);
+    const newPoll = new PollModel({ title, is_multiple, options, votes });
+    newPoll.save()
+        .then(() => {
+            console.log("Poll saved");
+            res.json(newPoll);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ message: "Error saving poll" });
         });
 });
 
