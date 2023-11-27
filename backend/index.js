@@ -203,6 +203,11 @@ app.post("/polls", (req, res) => {
             const userId = decoded.id; 
         
             try {
+                const poll = await PollModel.findById(req.params.id);
+                if (poll.user_voted.includes(userId)) {
+                    return res.status(400).json({ error: 'User has already voted' });
+                }
+
                 const updatedDoc = await PollModel.findOneAndUpdate(
                     { _id: req.params.id },
                     { 
@@ -238,21 +243,38 @@ app.get("/polls", (req, res) =>{
     }
 )   
 
-app.delete("/polls/:id", (req, res) => {
-    const pollId = req.params.id;
+app.delete("/polls/:id", async (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).json({ error: 'No token provided' });
+    }
 
-    PollModel.findOneAndDelete({ _id: pollId })
-        .then(deletedPoll => {
-            if (deletedPoll) {
-                res.status(200).json({ message: "Poll deleted successfully" });
-            } else {
-                res.status(404).json({ message: "No poll found with that ID" });
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, secret, async (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Invalid token' });
+        }
+    
+        const userId = decoded.id; 
+
+        try {
+            const poll = await PollModel.findById(req.params.id);
+            if (!poll) {
+                return res.status(404).json({ message: "No poll found with that ID" });
             }
-        })
-        .catch(err => {
+
+            if (poll.owner.toString() !== userId) {
+                return res.status(403).json({ message: "User is not the owner of the poll" });
+            }
+
+            const deletedPoll = await PollModel.findOneAndDelete({ _id: req.params.id });
+            res.status(200).json({ message: "Poll deleted successfully" });
+        } catch (err) {
             console.error(err);
             res.status(500).json({ message: "Error deleting poll" });
-        });
+        }
+    });
 });
 
 

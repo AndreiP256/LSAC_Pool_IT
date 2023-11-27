@@ -64,7 +64,6 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
   const handleDelete = async () => {
     try {
         const response = await axios.delete(`http://localhost:5000/polls/${id_pool}`, 
-            { id: id_pool }, 
             {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
