@@ -122,7 +122,7 @@ app.get("/users", (req, res) =>{
         });
     });
 
-app.post("/new_poll", (req, res) => {
+app.post("/polls", (req, res) => {
     const title = req.body.title;
     const is_multiple = req.body.is_multiple;
     const options = req.body.options;
@@ -186,7 +186,7 @@ app.post("/new_poll", (req, res) => {
         });
 });
 
-    app.put("/update_pool", async (req, res) => {
+    app.patch("/polls/vote/:id", async (req, res) => {
         const authHeader = req.headers.authorization;
         console.log(authHeader, req.body);
         if (!authHeader) {
@@ -204,7 +204,7 @@ app.post("/new_poll", (req, res) => {
         
             try {
                 const updatedDoc = await PollModel.findOneAndUpdate(
-                    { _id: req.body.id },
+                    { _id: req.params.id },
                     { 
                         $push: { user_voted: userId },
                         $set: { votes: req.body.votes }
@@ -238,8 +238,8 @@ app.get("/polls", (req, res) =>{
     }
 )   
 
-app.post("/delete_pool", (req, res) => {
-    const pollId = req.body.id;
+app.delete("/polls/:id", (req, res) => {
+    const pollId = req.params.id;
 
     PollModel.findOneAndDelete({ _id: pollId })
         .then(deletedPoll => {

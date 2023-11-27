@@ -49,7 +49,7 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
 
       try {
         console.log(localStorage.getItem('token'));
-        const response = await axios.put('http://localhost:5000/update_pool', {id: id_pool, votes: newVotes}, {
+        const response = await axios.patch(`http://localhost:5000/polls/vote/${id_pool}`, {votes: newVotes}, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -63,7 +63,7 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
 
   const handleDelete = async () => {
     try {
-        const response = await axios.post('http://localhost:5000/delete_pool', 
+        const response = await axios.delete(`http://localhost:5000/polls/${id_pool}`, 
             { id: id_pool }, 
             {
                 headers: {

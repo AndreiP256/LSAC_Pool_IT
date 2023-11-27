@@ -46,7 +46,7 @@ export default function CreatePool() {
     const title = titleElement.value;
     const isMultiple = multipleChoiceElement.checked;
   
-    await axios.post('http://localhost:5000/new_poll', {
+    await axios.post('http://localhost:5000/polls', {
       title,
       is_multiple: isMultiple,
       options,
