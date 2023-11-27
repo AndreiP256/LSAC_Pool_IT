@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const app = express();
 
-const secret = 'your-secret-key';
+const secret = 'lsac_poll';
 
 app.use(cors());
 
@@ -125,7 +125,7 @@ app.post("/new_poll", (req, res) => {
     });
   });
 
-app.post("/login", (req, res) => {
+  app.post("/login", (req, res) => {
     console.log(req.body);
     const email = req.body.email;
     const password = req.body.password;
@@ -137,7 +137,8 @@ app.post("/login", (req, res) => {
             } else {
                 if (password === user.password) {
                     const token = jwt.sign({ id: user._id }, secret);
-                    res.json({ message: "Logged in successfully", token: token });
+                    res.json({ message: "Logged in successfully", token: token, userId: user._id });
+                    console.log("Logged in ",user._id )
                 } else {
                     res.status(400).json({ message: "Incorrect email or password" });
                 }
@@ -147,42 +148,41 @@ app.post("/login", (req, res) => {
             console.log(err);
             res.status(500).json({ message: "Error logging in" });
         });
-});
+    });
 
-app.get('/user', (req, res) => {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-        return res.status(401).json({ error: 'No token provided' });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    jwt.verify(token, secret, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ error: 'Invalid token' });
+    app.put("/update_pool", async (req, res) => {
+        const authHeader = req.headers.authorization;
+        console.log(authHeader, req.body);
+        if (!authHeader) {
+            return res.status(401).json({ error: 'No token provided' });
         }
-
-        res.json({ userId: decoded.id });
+    
+        const token = authHeader.split(' ')[1];
+    
+        jwt.verify(token, secret, async (err, decoded) => {
+            if (err) {
+                return res.status(401).json({ error: 'Invalid token' });
+            }
+        
+            const userId = decoded.id; 
+        
+            try {
+                const updatedDoc = await PollModel.findOneAndUpdate(
+                    { _id: req.body.id },
+                    { 
+                        $push: { user_voted: userId },
+                        $set: { votes: req.body.votes }
+                    },
+                    { new: true }
+                );
+                console.log(updatedDoc);
+                res.json(updatedDoc);
+            } catch (err) {
+                console.log("Something wrong when updating data!");
+                res.status(500).json({ error: 'Error updating data' });
+            }
+        });
     });
-});
-
-app.put("/update_pool", authenticate, (req, res) => {
-    const { id, votes, user_voted } = req.body;
-    console.log(req.body);
-    PollModel.findByIdAndUpdate(id, { votes, user_voted }, (err, poll) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error updating poll' });
-      }
-  
-      if (!poll) {
-        return res.status(404).json({ error: 'Poll not found' });
-      }
-  
-      res.json({ message: 'Poll updated successfully' });
-    });
-});
-
 
 app.post("/logout", authenticate, (req, res) => {
   

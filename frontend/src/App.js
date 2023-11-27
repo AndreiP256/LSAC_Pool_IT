@@ -12,6 +12,7 @@ import FooterComponent from "./components/footer/footer";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -19,6 +20,7 @@ function App() {
 
     if (token) {
       setIsLoggedIn(true);
+      setUserId(userId);
     }
   }, []);
 

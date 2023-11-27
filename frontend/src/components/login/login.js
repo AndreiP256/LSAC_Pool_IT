@@ -28,15 +28,19 @@ export default function Login() {
       if (response) {
         setErrorMessage('');
         const token = response.data.token;
-        const user_id = response.data.user_id;
+        const userId = response.data.userId;
         localStorage.setItem('token', token);
-        localStorage.setItem('user_id', user_id);
+        localStorage.setItem('userId', userId);
         setShowLoginSuccess(true);
         setTimeout(() => {setShowLoginSuccess(false); setIsLoggedIn(true);}, 2000);
       }
     } catch (error) {
       console.error("Error logging in:", error);
-      if (error.response && error.response.data) {
+      if (error.response && error.response.status === 401) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+      } else if (error.response && error.response.data) {
         setErrorMessage(error.response.data.message);
       } else {
         setErrorMessage("An error occurred while logging in");

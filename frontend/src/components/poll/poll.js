@@ -17,15 +17,16 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
   const [id_pool, setID] = useState(id);
   const { isLoggedIn } = useContext(AuthContext);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const userId = localStorage.getItem('user_id');
+  const userId = localStorage.getItem('userId');
   const [votes, setVotes] = useState(got_votes); 
   const [usersVoted, setUsersVoted] = useState(users_voted);
   const isVoted = users_voted.includes(userId);
 
+  console.log(userId);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(userId);
     if (!usersVoted.includes(userId)) {
       console.log('Sending vote request');
       const newVotes = [...votes];
@@ -41,9 +42,9 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
 
       try {
         console.log(localStorage.getItem('token'));
-        const response = await axios.put('http://localhost:5000/update_pool', {id: id_pool, votes: newVotes, usersVoted: newUsersVoted }, {
+        const response = await axios.put('http://localhost:5000/update_pool', {id: id_pool, votes: newVotes}, {
           headers: {
-            'Authorization': localStorage.getItem('token')
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
       } catch (error) {

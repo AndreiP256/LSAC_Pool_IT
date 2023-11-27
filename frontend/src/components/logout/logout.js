@@ -9,6 +9,7 @@ export default function Logout() {
 
   const handleLogout = () => {
     localStorage.removeItem('token'); 
+    localStorage.removeItem('userId');
     setShowLogoutSuccess(true);
     setTimeout(() => {setShowLogoutSuccess(false); setIsLoggedIn(false)}, 2000);
   };
