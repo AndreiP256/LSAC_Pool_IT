@@ -1,0 +1,30 @@
+.error-page {
+    text-align: center;
+    margin-top: 50px;
+    font-family: Arial, sans-serif;
+    min-height: 75vh;
+}
+
+.error-page h1 {
+    font-size: 3em;
+    color: #FFFFFF
+}
+
+.error-page p {
+    font-size: 1.2em;
+    color: #FFFFFF
+}
+
+.error-page a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007BFF;
+    text-decoration: none;
+    border-radius: 5px;                                             
+}
+
+.error-page a:hover {                                                                                           
+    background-image: url('../../assets/backgrounds/it_bg-01.png');
+}
