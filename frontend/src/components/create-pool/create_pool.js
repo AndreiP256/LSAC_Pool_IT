@@ -58,6 +58,7 @@ export default function CreatePool() {
       .then(response => {
         console.log('Success:', response.data);
         handleClose();
+        window.location.reload()
       })
       .catch((error) => {
         console.error('Error:', error);

@@ -35,6 +35,7 @@ export default function Home() {
                         id={pool._id}
                         users_voted={pool.user_voted}
                         got_votes={pool.votes}
+                        own={pool.owner}
                     />
                 ))}
             </div>

@@ -202,6 +202,23 @@ app.get("/polls", (req, res) =>{
     }
 )   
 
+app.post("/delete_pool", (req, res) => {
+    const pollId = req.body.id;
+
+    PollModel.findOneAndDelete({ _id: pollId })
+        .then(deletedPoll => {
+            if (deletedPoll) {
+                res.status(200).json({ message: "Poll deleted successfully" });
+            } else {
+                res.status(404).json({ message: "No poll found with that ID" });
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ message: "Error deleting poll" });
+        });
+});
+
 
 app.listen(5000, () => {
     console.log("Server is running")

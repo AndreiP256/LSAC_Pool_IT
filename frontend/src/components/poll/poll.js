@@ -10,20 +10,25 @@ import axios from 'axios';
 import './poll.css';
 import Button from 'react-bootstrap/esm/Button';
 
-export default function Pool({ received_title, is_multiple, choices, users_voted, got_votes, id}) {
+export default function Pool({ received_title, is_multiple, choices, users_voted, got_votes, id, own}) {
   const [options, setOptions] = useState(choices);
   const [title, setTitle] = useState(received_title);
   const [type, setType] = useState(is_multiple);
   const [id_pool, setID] = useState(id);
+  const [owner, setOwner] = useState(own);
   const { isLoggedIn } = useContext(AuthContext);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const userId = localStorage.getItem('userId');
   const [votes, setVotes] = useState(got_votes); 
   const [usersVoted, setUsersVoted] = useState(users_voted);
   const isVoted = users_voted.includes(userId);
+  const [isHis, setIsHis] = useState(false);
 
-  console.log(userId);
-
+  useEffect(() => {
+    if (userId === owner) {
+        setIsHis(true);
+    }
+  }, [userId, owner]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,9 +52,32 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
+        window.location.reload()
       } catch (error) {
         console.error(error);
       }
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+        const response = await axios.post('http://localhost:5000/delete_pool', 
+            { id: id_pool }, 
+            {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        if (response.status === 200) {
+            console.log("Poll deleted successfully");
+            window.location.reload()
+        } else {
+            console.log("Failed to delete poll");
+        }
+    } catch (error) {
+        console.error(error);
     }
   };
 
@@ -81,8 +109,11 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
             </div>
           ))}
         </FormGroup>
-        {isLoggedIn &&  !isVoted &&  <Button className='vote-btn' variant="primary" type='submit'>Vote</Button>}
-        {isLoggedIn && isVoted && <Button className='vote-btn' variant="primary" type='submit' disabled>Voted</Button>}
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          {isLoggedIn &&  !isVoted &&  <Button className='vote-btn' variant="primary" type='submit'>Vote</Button>}
+          {isLoggedIn && isVoted && <Button className='vote-btn' variant="primary" type='submit' disabled>Voted</Button>}
+          {isLoggedIn && isHis && <Button className='delete_btn' variant="primary" onClick={handleDelete}>Delete</Button>}
+        </div>
       </Form>
       </div>
   );
