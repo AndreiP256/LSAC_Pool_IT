@@ -24,6 +24,8 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
   const isVoted = users_voted.includes(userId);
   const [isHis, setIsHis] = useState(false);
 
+  console.log(userId);
+
   useEffect(() => {
     if (userId === owner) {
         setIsHis(true);
@@ -90,7 +92,7 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
         </FormGroup>
         <FormGroup className='form-group form-options' controlId={`pool_show_options_${id_pool}`}>
           {Array.isArray(options) && options.map((option, index) => (
-            <div key={index} className='options'>
+            <div key={index} className='options' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <FormCheck
                 name={`id_${id_pool}`}
                 type={type ? 'checkbox' : 'radio'}
@@ -106,6 +108,7 @@ export default function Pool({ received_title, is_multiple, choices, users_voted
                   setSelectedOptions(newSelectedOptions);
                 }}
               />
+              <div>{votes[index] || 0} votes</div>
             </div>
           ))}
         </FormGroup>

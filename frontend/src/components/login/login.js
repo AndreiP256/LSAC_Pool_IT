@@ -48,7 +48,6 @@ export default function Login() {
     }
   };
 
-//TODO: MAKE ALERT WORK TY:)
 
   return (
     <>

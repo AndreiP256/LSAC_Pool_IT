@@ -28,12 +28,13 @@ export default function Register() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/new', { "email":email, "password":password });
+      const response = await axios.post('http://localhost:5000/new', { "email":email, "password":password, "confpass":confpassword });
       console.log('Received response:', response);
       if (response) {
         setErrorMessage('');
         setShowRegisterSuccess(true);
-        setTimeout(() => setShowRegisterSuccess(false), 5000);
+        setTimeout(() => setShowRegisterSuccess(false), 2000);
+        window.location.reload()
       }
     } catch (error) {
       console.error("Error registering:", error);
