@@ -35,6 +35,7 @@ export default function Register() {
         setShowRegisterSuccess(true);
         setTimeout(() => setShowRegisterSuccess(false), 2000);
         window.location.reload()
+        //Mabye add a redirect here
       }
     } catch (error) {
       console.error("Error registering:", error);

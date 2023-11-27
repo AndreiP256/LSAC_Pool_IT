@@ -1,34 +1,63 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const UserModel = require('./models');
+const { UserModel } = require('./models');
 const router = express.Router();
 const saltRounds = 10;
 const secret = 'lsac_poll';
 
 router.post("/new", (req, res) => {
-  const { name, email, password } = req.body;
+    const email = req.body.email;
+    const password = req.body.password;
+    const confirmPassword = req.body.confpass;
 
-  bcrypt.hash(password, saltRounds, function(err, hash) {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ message: "Error hashing password" });
-      return;
+    const emailRegex = /^[a-zA-Z0-9]+@gmail\.com$/;
+    if (!emailRegex.test(email)) {
+        res.status(400).json({ message: "Invalid email. Only '@gmail.com' emails are allowed." });
+        return;
     }
 
-    const newUser = new UserModel({ name, email, password: hash });
+    if (password.length < 8 || password.length > 32) {
+        res.status(400).json({ message: "Invalid password. Password must be between 8 and 32 characters." });
+        return;
+    }
 
-    newUser.save()
-      .then(() => {
-        console.log("User saved");
-        res.json(newUser);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({ message: "Error saving user" });
-      });
-  });
+    if (password !== confirmPassword) {
+        res.status(400).json({ message: "Passwords do not match." });
+        return;
+    }
+
+    bcrypt.hash(password, saltRounds, function(err, hash) {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ message: "Error hashing password" });
+            return;
+        }
+
+        UserModel.findOne({ email: email })
+            .then(user => {
+                if (user) {
+                    res.status(400).json({ message: "Email already in use" });
+                } else {
+                    const newUser = new UserModel({ email, password: hash });
+                    newUser.save()
+                        .then(() => {
+                            console.log("User saved");
+                            res.json(newUser);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            res.status(500).json({ message: "Error saving user" });
+                        });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json({ message: "Error finding user" });
+            });
+    });
 });
+
 
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
