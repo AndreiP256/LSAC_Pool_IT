@@ -51,9 +51,6 @@ function authenticate(req, res, next) {
         if (err) {
             return res.status(401).json({ message: "Invalid token" });
         }
-
-        // If the token is valid, call next() to proceed to the next middleware or route handler
-        next();
     });
 }
 
@@ -107,14 +104,12 @@ app.get("/users", (req, res) =>{
                                 console.log("User saved");
                                 res.json(newUser);
                             })
-                            // handle save error
                             .catch(err => {
                                 console.error(err);
                                 res.status(500).json({ message: "Error saving user" });
                             });
                     }
                 })
-                // handle find error
                 .catch(err => {
                     console.error(err);
                     res.status(500).json({ message: "Error finding user" });

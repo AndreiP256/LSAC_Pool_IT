@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useState } from 'react';
 import { AuthContext } from './AuthContext';
-import { useEffect } from 'react'; // Import useEffect
+import { useEffect } from 'react';
 
 import NavbarComponent from './components/navbar/navbar';
 import Home from './pages/home/home';

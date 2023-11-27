@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const UserModel = require('./models'); // replace with the path to your User model
+const UserModel = require('./models');
 const router = express.Router();
 const saltRounds = 10;
 const secret = 'lsac_poll';
