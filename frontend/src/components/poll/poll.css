@@ -20,3 +20,10 @@
   .q-title{
     font-weight: bolder;
   }
+  
+  @media (max-width: 600px) {
+    .the_pool {
+      min-width: 200px;
+      width: 80%;  
+    }
+  }
