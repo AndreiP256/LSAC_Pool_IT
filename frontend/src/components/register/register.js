@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/esm/Nav';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 import './register.css';
 
@@ -15,6 +16,9 @@ export default function Register() {
   const [confpassword, setConfPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showRegisterSuccess, setShowRegisterSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfPassword, setShowConfPassword] = useState(false);
+
 
 
   const handleClose = () => setShow(false);
@@ -67,20 +71,30 @@ export default function Register() {
                         required
                         autoFocus
                     />
+                    <InputGroup className='no-margins'>
                     <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        required
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      required
                     />
+                      <Button variant="outline-light" onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? "Hide" : "Show"}
+                      </Button>
+                    </InputGroup>
+                    <InputGroup className='no-margins'>
                     <Form.Control
-                        type="password"
-                        placeholder="Confirm Password"
-                        value={confpassword}
-                        onChange={e => setConfPassword(e.target.value)}
-                        required
+                      type={showConfPassword ? "text" : "password"}
+                      placeholder="Confirm Password"
+                      value={confpassword}
+                      onChange={e => setConfPassword(e.target.value)}
+                      required
                     />
+                      <Button variant="outline-light" onClick={() => setShowConfPassword(!showConfPassword)}>
+                        {showConfPassword ? "Hide" : "Show"}
+                      </Button>
+                      </InputGroup>
                     <Button variant="primary" type="submit">
                       Create Account
                     </Button>

@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { AuthContext } from '../../AuthContext';
 import './login.css';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 export default function Login() {
   const [show, setShow] = useState(false);
@@ -15,6 +16,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
   const { setIsLoggedIn } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -68,13 +70,18 @@ export default function Login() {
               required
               autoFocus
             />
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-            />
+            <InputGroup className='no-margins'>
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+                <Button variant="outline-light" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+            </InputGroup>
             <Button variant="primary" type="submit">
               Login
             </Button>

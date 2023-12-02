@@ -62,4 +62,19 @@ form{
     color: #FFFFFF;
 }
 
+.form-control,
+.btn-outline-light {
+  background-color: #04395E;
+  color: #FFFFFF;
+  margin: 20px 0 20px 0;
+}
 
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: #FFFFFF;
+  color: #04395E;
+}
+
+.no-margins{
+    margin: 0;
+}
